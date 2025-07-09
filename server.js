@@ -11,6 +11,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ Logging middleware (logs method, URL, and time)
+app.use((req, res, next) => {
+  const now = new Date().toISOString();
+  console.log(`[${now}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 // ✅ Serve Let's Encrypt challenge files
 app.use(
   "/.well-known/acme-challenge",
