@@ -11,6 +11,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ Serve Let's Encrypt challenge files
+app.use(
+  "/.well-known/acme-challenge",
+  express.static("/var/www/beks.tech/.well-known/acme-challenge")
+);
+
 // Serve static files from 'public' directory
 app.use(express.static(path.join(__dirname, "public", "dist")));
 
@@ -19,11 +25,11 @@ app.use("/api/contact", contactRoutes);
 
 // Serve index.html at '/'
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", 'dist', "index.html"));
+  res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
 });
 
 // Start server
 const PORT = process.env.PORT || 3500;
-app.listen(3500, '0.0.0.0', () => {
+app.listen(3500, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
