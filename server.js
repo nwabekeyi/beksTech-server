@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 
 // ✅ Serve Let's Encrypt challenge files
 app.use(
-  "/.well-known/acme-challenge",
+  "/well-known/acme-challenge",
   express.static("/var/www/beks.tech/.well-known/acme-challenge")
 );
 
