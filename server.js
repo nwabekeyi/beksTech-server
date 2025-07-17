@@ -35,6 +35,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
 });
 
+// Serve index.html at '/'
+app.get("/chidiebere", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
+});
+
 // Start server
 const PORT = process.env.PORT || 3500;
 app.listen(3500, "0.0.0.0", () => {
