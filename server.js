@@ -18,6 +18,28 @@ app.use((req, res, next) => {
   next();
 });
 
+// app.use(express.json);
+// const users = [
+//     {
+//         id: 1,
+//         username: 'chidi',
+//         age: 30
+//     }
+// ];
+
+
+
+// app.get('/api/v1/users', (req, res) =>{
+//     console.log('testing')
+
+// console.log('called')
+//     res.send({
+//         message: 'success',
+//         users
+//     })
+
+// });
+
 // ✅ Serve Let's Encrypt challenge files
 app.use(
   "/.well-known/acme-challenge",
