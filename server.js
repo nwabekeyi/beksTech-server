@@ -2,16 +2,25 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
+const mongoose = require("mongoose");
+
 const contactRoutes = require("./routes/contactRoutes");
+const projectRoutes = require("./routes/projectRoutes");
+const adminRoutes = require("./routes/adminRoutes"); 
 
 dotenv.config();
 const app = express();
 
-// Middleware
+// ✅ CONNECT TO MONGO
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection failed:", err));
+
 app.use(cors());
 app.use(express.json());
 
-// ✅ Logging middleware (logs method, URL, and time)
+// ✅ Logger
 app.use((req, res, next) => {
   const now = new Date().toISOString();
   console.log(`[${now}] ${req.method} ${req.originalUrl}`);
@@ -40,30 +49,31 @@ app.use((req, res, next) => {
 
 // });
 
-// ✅ Serve Let's Encrypt challenge files
+// ✅ SSL Certificate Challenge Path
 app.use(
   "/.well-known/acme-challenge",
   express.static("/var/www/beks.tech/.well-known/acme-challenge")
 );
 
-// Serve static files from 'public' directory
+// ✅ Serve Static Files
 app.use(express.static(path.join(__dirname, "public", "dist")));
 
-// API routes
+// ✅ API Routes
 app.use("/api/contact", contactRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/admin", adminRoutes); 
 
-// Serve index.html at '/'
+// ✅ Fallback Route for SPA
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
 });
 
-// Serve index.html at '/'
 app.get("/chidiebere", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
 });
 
-// Start server
+// ✅ Server Listen
 const PORT = process.env.PORT || 3500;
-app.listen(3500, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(` Server running on port ${PORT}`);
 });
